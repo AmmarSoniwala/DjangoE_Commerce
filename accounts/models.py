@@ -8,6 +8,7 @@ class User(models.Model):
     password = models.CharField(max_length=128)
     phone_number = models.CharField(max_length=15)
     refresh_token = models.CharField(max_length=255, blank=True, null=True)
+    super_user = models.BooleanField(default=0)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} ({self.email})"
