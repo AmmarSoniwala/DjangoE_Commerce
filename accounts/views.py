@@ -183,7 +183,7 @@ def ForgotView(request):
             request.session['reset_email'] = email
             return redirect("verify_otp")
         else:
-            return redirect("forgot_password")
+            return render(request, 'accounts/forgot_password.html', {'error': 'No account found with that email address.'})
     else:
         return render(request, 'accounts/forgot_password.html')
 
