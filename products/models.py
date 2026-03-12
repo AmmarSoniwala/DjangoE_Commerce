@@ -23,7 +23,17 @@ class Products(models.Model):
     def __str__(self):
         return self.name
 
-class Comments(models.Model):
+    @property
+    def is_discounted(self):
+        return self.discount > 0
+
+    @property
+    def discounted_price(self):
+        if self.is_discounted:
+            return round(self.price * (1 - self.discount / 100))
+        return self.price
+
+class ProductReview(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Products, on_delete=models.CASCADE)
     stars = models.IntegerField(

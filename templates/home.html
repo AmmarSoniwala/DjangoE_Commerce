@@ -102,6 +102,27 @@
       font-size: 0.85rem;
       color: #aaa;
     }
+
+    .image-holder {
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .banner-img {
+      width: 90%;
+      height: auto;
+      padding: 15px;
+      border-radius: 20px;
+      background-color: white;
+      box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.15);
+      transition: all 0.3s ease-in-out;
+    }
+
+    .banner-img:hover {
+      transform: scale(1.02);
+      box-shadow: 0px 12px 35px rgba(0, 0, 0, 0.25);
+    }
   </style>
 </head>
 
@@ -329,36 +350,20 @@
               <li class="nav-item">
                 <a class="nav-link me-4" href="index.html">Blogs</a>
               </li>
+              {% if is_superuser %}
               <li class="nav-item dropdown">
                 <a class="nav-link me-4 dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
-                  aria-expanded="false">Pages</a>
+                  aria-expanded="false">Products</a>
                 <ul class="dropdown-menu animate slide border">
                   <li>
-                    <a href="index.html" class="dropdown-item fw-light">About</a>
+                    <a href="{% url 'add_product' %}" class="dropdown-item fw-light">Add Product</a>
                   </li>
                   <li>
-                    <a href="index.html" class="dropdown-item fw-light">Shop</a>
-                  </li>
-                  <li>
-                    <a href="index.html" class="dropdown-item fw-light">Single Product</a>
-                  </li>
-                  <li>
-                    <a href="index.html" class="dropdown-item fw-light">Cart</a>
-                  </li>
-                  <li>
-                    <a href="index.html" class="dropdown-item fw-light">Checkout</a>
-                  </li>
-                  <li>
-                    <a href="index.html" class="dropdown-item fw-light">Blog</a>
-                  </li>
-                  <li>
-                    <a href="index.html" class="dropdown-item fw-light">Single Post</a>
-                  </li>
-                  <li>
-                    <a href="index.html" class="dropdown-item fw-light">Contact</a>
+                    <a href="{% url 'update_page' %}" class="dropdown-item fw-light">Update Product</a>
                   </li>
                 </ul>
               </li>
+              {% endif %}
               <li class="nav-item">
                 <a class="nav-link me-4" href="index.html">Contact</a>
               </li>
@@ -443,71 +448,17 @@
 
   <section id="billboard" class="position-relative d-flex align-items-center py-5 bg-light-gray"
     style="background-image: url({% static 'images/banner-image-bg.jpg' %}); background-size: cover; background-repeat: no-repeat; background-position: center; height: 800px;">
-    <div class="position-absolute end-0 pe-0 pe-xxl-5 me-0 me-xxl-5 swiper-next main-slider-button-next">
-      <svg class="chevron-forward-circle d-flex justify-content-center align-items-center p-2" width="80" height="80">
-        <use xlink:href="#alt-arrow-right-outline"></use>
-      </svg>
-    </div>
-    <div class="position-absolute start-0 ps-0 ps-xxl-5 ms-0 ms-xxl-5 swiper-prev main-slider-button-prev">
-      <svg class="chevron-back-circle d-flex justify-content-center align-items-center p-2" width="80" height="80">
-        <use xlink:href="#alt-arrow-left-outline"></use>
-      </svg>
-    </div>
-    <div class="swiper main-swiper">
-      <div class="swiper-wrapper d-flex align-items-center">
-        <div class="swiper-slide">
-          <div class="container">
-            <div class="row d-flex flex-column-reverse flex-md-row align-items-center">
-              <div class="col-md-5 offset-md-1 mt-5 mt-md-0 text-center text-md-start">
-                <div class="banner-content">
-                  <h2>The Fine Print Book Collection</h2>
-                  <p>Best Offer Save 30%. Grab it now!</p>
-                  <a href="index.html" class="btn mt-3">Shop Collection</a>
-                </div>
-              </div>
-              <div class="col-md-6 text-center">
-                <div class="image-holder">
-                  <img src="{% static 'images/banner-image2.png' %}" class="img-fluid" alt="banner">
-                </div>
-              </div>
-            </div>
-          </div>
+    <div class="row d-flex flex-column-reverse flex-md-row align-items-center">
+      <div class="col-md-5 offset-md-1 mt-5 mt-md-0 text-center text-md-start">
+        <div class="banner-content">
+          <h2>Exclusive Deals on Top Products</h2>
+          <p>Save 30% instantly. Don't miss out!</p>
+          <a href="index.html" class="btn mt-3">Shop Products</a>
         </div>
-        <div class="swiper-slide">
-          <div class="container">
-            <div class="row d-flex flex-column-reverse flex-md-row align-items-center">
-              <div class="col-md-5 offset-md-1 mt-5 mt-md-0 text-center text-md-start">
-                <div class="banner-content">
-                  <h2>How Innovation works</h2>
-                  <p>Discount available. Grab it now!</p>
-                  <a href="index.html" class="btn mt-3">Shop Product</a>
-                </div>
-              </div>
-              <div class="col-md-6 text-center">
-                <div class="image-holder">
-                  <img src="{% static 'images/banner-image1.png' %}" class="img-fluid" alt="banner">
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="swiper-slide">
-          <div class="container">
-            <div class="row d-flex flex-column-reverse flex-md-row align-items-center">
-              <div class="col-md-5 offset-md-1 mt-5 mt-md-0 text-center text-md-start">
-                <div class="banner-content">
-                  <h2>Your Heart is the Sea</h2>
-                  <p>Limited stocks available. Grab it now!</p>
-                  <a href="index.html" class="btn mt-3">Shop Collection</a>
-                </div>
-              </div>
-              <div class="col-md-6 text-center">
-                <div class="image-holder">
-                  <img src="{% static 'images/banner-image.png' %}" class="img-fluid" alt="banner">
-                </div>
-              </div>
-            </div>
-          </div>
+      </div>
+      <div class="col-md-6 text-center">
+        <div class="image-holder">
+          <img src="/static/images/E-commerce_img.png" class="banner-img" alt="banner">
         </div>
       </div>
     </div>
@@ -590,53 +541,7 @@
       </div>
       <div class="swiper product-swiper">
         <div class="swiper-wrapper">
-          <div class="swiper-slide">
-            <div class="card position-relative p-4 border rounded-3">
-              <div class="position-absolute">
-                <p class="bg-primary py-1 px-3 fs-6 text-white rounded-2">10% off</p>
-              </div>
-              <img src="{% static 'images/product-item1.png' %}" class="img-fluid shadow-sm" alt="product item">
-              <h6 class="mt-4 mb-0 fw-bold"><a href="index.html">House of Sky Breath</a></h6>
-              <div class="review-content d-flex">
-                <p class="my-2 me-2 fs-6 text-black-50">Lauren Asher</p>
-
-                <div class="rating text-warning d-flex align-items-center">
-                  <svg class="star star-fill">
-                    <use xlink:href="#star-fill"></use>
-                  </svg>
-                  <svg class="star star-fill">
-                    <use xlink:href="#star-fill"></use>
-                  </svg>
-                  <svg class="star star-fill">
-                    <use xlink:href="#star-fill"></use>
-                  </svg>
-                  <svg class="star star-fill">
-                    <use xlink:href="#star-fill"></use>
-                  </svg>
-                  <svg class="star star-fill">
-                    <use xlink:href="#star-fill"></use>
-                  </svg>
-                </div>
-              </div>
-              <span class="price text-primary fw-bold mb-2 fs-5">$870</span>
-              <div class="card-concern position-absolute start-0 end-0 d-flex gap-2">
-                <button type="button" href="#" class="btn btn-dark" data-bs-toggle="tooltip" data-bs-placement="top"
-                  data-bs-title="Tooltip on top">
-                  <svg class="cart">
-                    <use xlink:href="#cart"></use>
-                  </svg>
-                </button>
-                <a href="#" class="btn btn-dark">
-                  <span>
-                    <svg class="wishlist">
-                      <use xlink:href="#heart"></use>
-                    </svg>
-                  </span>
-                </a>
-              </div>
-            </div>
-          </div>
-          <div class="swiper-slide">
+          <!-- <div class="swiper-slide">
             <div class="card position-relative p-4 border rounded-3">
               <img src="{% static 'images/product-item2.png' %}" class="img-fluid shadow-sm" alt="product item">
               <h6 class="mt-4 mb-0 fw-bold"><a href="index.html">Heartland Stars</a></h6>
@@ -679,191 +584,238 @@
                 </a>
               </div>
             </div>
-          </div>
-          <div class="swiper-slide">
-            <div class="card position-relative p-4 border rounded-3">
-              <img src="{% static 'images/product-item3.png' %}" class="img-fluid shadow-sm" alt="product item">
-              <h6 class="mt-4 mb-0 fw-bold"><a href="index.html">Heavenly Bodies</a></h6>
-              <div class="review-content d-flex">
-                <p class="my-2 me-2 fs-6 text-black-50">Lauren Asher</p>
-
-                <div class="rating text-warning d-flex align-items-center">
-                  <svg class="star star-fill">
-                    <use xlink:href="#star-fill"></use>
-                  </svg>
-                  <svg class="star star-fill">
-                    <use xlink:href="#star-fill"></use>
-                  </svg>
-                  <svg class="star star-fill">
-                    <use xlink:href="#star-fill"></use>
-                  </svg>
-                  <svg class="star star-fill">
-                    <use xlink:href="#star-fill"></use>
-                  </svg>
-                  <svg class="star star-fill">
-                    <use xlink:href="#star-fill"></use>
-                  </svg>
-                </div>
-              </div>
-
-              <span class="price text-primary fw-bold mb-2 fs-5">$870</span>
-              <div class="card-concern position-absolute start-0 end-0 d-flex gap-2">
-                <button type="button" href="#" class="btn btn-dark" data-bs-toggle="tooltip" data-bs-placement="top"
-                  data-bs-title="Tooltip on top">
-                  <svg class="cart">
-                    <use xlink:href="#cart"></use>
-                  </svg>
-                </button>
-                <a href="#" class="btn btn-dark">
-                  <span>
-                    <svg class="wishlist">
-                      <use xlink:href="#heart"></use>
-                    </svg>
-                  </span>
-                </a>
-              </div>
-            </div>
-          </div>
-          <div class="swiper-slide">
-            <div class="card position-relative p-4 border rounded-3">
-              <div class="position-absolute">
-                <p class="bg-primary py-1 px-3 fs-6 text-white rounded-2">10% off</p>
-              </div>
-              <img src="{% static 'images/product-item4.png' %}" class="img-fluid shadow-sm" alt="product item">
-              <h6 class="mt-4 mb-0 fw-bold"><a href="index.html">His Saving Grace</a></h6>
-              <div class="review-content d-flex">
-                <p class="my-2 me-2 fs-6 text-black-50">Lauren Asher</p>
-
-                <div class="rating text-warning d-flex align-items-center">
-                  <svg class="star star-fill">
-                    <use xlink:href="#star-fill"></use>
-                  </svg>
-                  <svg class="star star-fill">
-                    <use xlink:href="#star-fill"></use>
-                  </svg>
-                  <svg class="star star-fill">
-                    <use xlink:href="#star-fill"></use>
-                  </svg>
-                  <svg class="star star-fill">
-                    <use xlink:href="#star-fill"></use>
-                  </svg>
-                  <svg class="star star-fill">
-                    <use xlink:href="#star-fill"></use>
-                  </svg>
-                </div>
-              </div>
-
-              <span class="price text-primary fw-bold mb-2 fs-5">$870</span>
-              <div class="card-concern position-absolute start-0 end-0 d-flex gap-2">
-                <button type="button" href="#" class="btn btn-dark" data-bs-toggle="tooltip" data-bs-placement="top"
-                  data-bs-title="Tooltip on top">
-                  <svg class="cart">
-                    <use xlink:href="#cart"></use>
-                  </svg>
-                </button>
-                <a href="#" class="btn btn-dark">
-                  <span>
-                    <svg class="wishlist">
-                      <use xlink:href="#heart"></use>
-                    </svg>
-                  </span>
-                </a>
-              </div>
-            </div>
-          </div>
-          <div class="swiper-slide">
-            <div class="card position-relative p-4 border rounded-3">
-              <img src="{% static 'images/product-item5.png' %}" class="img-fluid shadow-sm" alt="product item">
-              <h6 class="mt-4 mb-0 fw-bold"><a href="index.html">My Dearest Darkest</a></h6>
-              <div class="review-content d-flex">
-                <p class="my-2 me-2 fs-6 text-black-50">Lauren Asher</p>
-
-                <div class="rating text-warning d-flex align-items-center d-flex align-items-center">
-                  <svg class="star star-fill">
-                    <use xlink:href="#star-fill"></use>
-                  </svg>
-                  <svg class="star star-fill">
-                    <use xlink:href="#star-fill"></use>
-                  </svg>
-                  <svg class="star star-fill">
-                    <use xlink:href="#star-fill"></use>
-                  </svg>
-                  <svg class="star star-fill">
-                    <use xlink:href="#star-fill"></use>
-                  </svg>
-                  <svg class="star star-fill">
-                    <use xlink:href="#star-fill"></use>
-                  </svg>
-                </div>
-              </div>
-
-              <span class="price text-primary fw-bold mb-2 fs-5">$870</span>
-              <div class="card-concern position-absolute start-0 end-0 d-flex gap-2">
-                <button type="button" href="#" class="btn btn-dark" data-bs-toggle="tooltip" data-bs-placement="top"
-                  data-bs-title="Tooltip on top">
-                  <svg class="cart">
-                    <use xlink:href="#cart"></use>
-                  </svg>
-                </button>
-                <a href="#" class="btn btn-dark">
-                  <span>
-                    <svg class="wishlist">
-                      <use xlink:href="#heart"></use>
-                    </svg>
-                  </span>
-                </a>
-              </div>
-            </div>
-          </div>
-          <div class="swiper-slide">
-            <div class="card position-relative p-4 border rounded-3">
-              <img src="{% static 'images/product-item6.png' %}" class="img-fluid shadow-sm" alt="product item">
-              <h6 class="mt-4 mb-0 fw-bold"><a href="index.html">The Story of Success</a></h6>
-              <div class="review-content d-flex">
-                <p class="my-2 me-2 fs-6 text-black-50">Lauren Asher</p>
-
-                <div class="rating text-warning d-flex align-items-center">
-                  <svg class="star star-fill">
-                    <use xlink:href="#star-fill"></use>
-                  </svg>
-                  <svg class="star star-fill">
-                    <use xlink:href="#star-fill"></use>
-                  </svg>
-                  <svg class="star star-fill">
-                    <use xlink:href="#star-fill"></use>
-                  </svg>
-                  <svg class="star star-fill">
-                    <use xlink:href="#star-fill"></use>
-                  </svg>
-                  <svg class="star star-fill">
-                    <use xlink:href="#star-fill"></use>
-                  </svg>
-                </div>
-              </div>
-
-              <span class="price text-primary fw-bold mb-2 fs-5">$870</span>
-              <div class="card-concern position-absolute start-0 end-0 d-flex gap-2">
-                <button type="button" href="#" class="btn btn-dark" data-bs-toggle="tooltip" data-bs-placement="top"
-                  data-bs-title="Tooltip on top">
-                  <svg class="cart">
-                    <use xlink:href="#cart"></use>
-                  </svg>
-                </button>
-                <a href="#" class="btn btn-dark">
-                  <span>
-                    <svg class="wishlist">
-                      <use xlink:href="#heart"></use>
-                    </svg>
-                  </span>
-                </a>
-              </div>
-            </div>
-          </div>
+          </div> -->
 
         </div>
       </div>
     </div>
   </section>
+
+  {% if elec_products %}
+  <section id="best-selling-items" class="position-relative padding-large ">
+    <div class="container">
+      <div class="section-title d-md-flex justify-content-between align-items-center mb-4">
+        <h3 class="d-flex align-items-center">Electronics & Gadgets</h3>
+        <a href="{% url 'category' %}?category=Electronics" class="btn">View All</a>
+      </div>
+      <div
+        class="position-absolute top-50 end-0 pe-0 pe-xxl-5 me-0 me-xxl-5 swiper-next-elec product-slider-button-next">
+        <svg class="chevron-forward-circle d-flex justify-content-center align-items-center p-2" width="80" height="80">
+          <use xlink:href="#alt-arrow-right-outline"></use>
+        </svg>
+      </div>
+      <div
+        class="position-absolute top-50 start-0 ps-0 ps-xxl-5 ms-0 ms-xxl-5 swiper-prev-elec product-slider-button-prev">
+        <svg class="chevron-back-circle d-flex justify-content-center align-items-center p-2" width="80" height="80">
+          <use xlink:href="#alt-arrow-left-outline"></use>
+        </svg>
+      </div>
+      <div class="swiper swiper-elec">
+        <div class="swiper-wrapper">
+          {% for product in elec_products|slice:"10" %}
+          <div class="swiper-slide">
+            <div class="card position-relative p-4 border rounded-3 product-card">
+              {% if product.is_discounted %}
+              <div class="discount-badge"
+                style="position: absolute; top: 10px; right: 10px; background: #ff4d4d; color: white; padding: 2px 8px; border-radius: 5px; font-size: 0.7rem; z-index: 10;">
+                {{ product.discount }}% OFF</div>
+              {% endif %}
+              <a href="/product_detail/{{ product.id }}">
+                {% if product.image %}
+                <img src="{{ product.image.url }}" class="img-fluid shadow-sm" alt="product item"
+                  style="height: 200px; object-fit: cover; width: 100%;">
+                {% else %}
+                <img src="{% static 'images/E-commerce_img.png' %}" class="img-fluid shadow-sm" alt="product item"
+                  style="height: 200px; object-fit: cover; width: 100%;">
+                {% endif %}
+              </a>
+              <h6 class="mt-4 mb-0 fw-bold"><a href="/product_detail/{{ product.id }}">{{ product.name }}</a></h6>
+              <div class="review-content d-flex">
+                <p class="my-2 me-2 fs-6 text-black-50">{{ product.brand }}</p>
+              </div>
+
+              <div class="d-flex flex-column">
+                {% if product.is_discounted %}
+                <span class="original-price text-decoration-line-through text small" style="color: grey;">₹
+                  {{product.price }}</span>
+                <span class="price text-primary fw-bold mb-2 fs-5">₹ {{ product.discounted_price }}</span>
+                {% else %}
+                <span class="price text-primary fw-bold mb-2 fs-5">₹ {{ product.price }}</span>
+                {% endif %}
+              </div>
+
+              <div class="card-concern position-absolute start-0 end-0 d-flex gap-2">
+                <button type="button" class="btn btn-dark cart-btn" data-product-id="{{ product.id }}">
+                  <svg class="cart" width="18" height="18">
+                    <use xlink:href="#cart"></use>
+                  </svg>
+                </button>
+                <a href="#" class="btn btn-dark">
+                  <span>
+                    <svg class="wishlist" width="18" height="18">
+                      <use xlink:href="#heart"></use>
+                    </svg>
+                  </span>
+                </a>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  {% if cloth_products %}
+  <section id="best-selling-items" class="position-relative padding-large ">
+    <div class="container">
+      <div class="section-title d-md-flex justify-content-between align-items-center mb-4">
+        <h3 class="d-flex align-items-center">Summer & Winter Clothing</h3>
+        <a href="{% url 'category' %}?category=Clothing" class="btn">View All</a>
+      </div>
+      <div
+        class="position-absolute top-50 end-0 pe-0 pe-xxl-5 me-0 me-xxl-5 swiper-next-cloth product-slider-button-next">
+        <svg class="chevron-forward-circle d-flex justify-content-center align-items-center p-2" width="80" height="80">
+          <use xlink:href="#alt-arrow-right-outline"></use>
+        </svg>
+      </div>
+      <div
+        class="position-absolute top-50 start-0 ps-0 ps-xxl-5 ms-0 ms-xxl-5 swiper-prev-cloth product-slider-button-prev">
+        <svg class="chevron-back-circle d-flex justify-content-center align-items-center p-2" width="80" height="80">
+          <use xlink:href="#alt-arrow-left-outline"></use>
+        </svg>
+      </div>
+      <div class="swiper swiper-cloth">
+        <div class="swiper-wrapper">
+          {% for product in cloth_products %}
+          <div class="swiper-slide">
+            <div class="card position-relative p-4 border rounded-3 product-card">
+              {% if product.is_discounted %}
+              <div class="discount-badge"
+                style="position: absolute; top: 10px; right: 10px; background: #ff4d4d; color: white; padding: 2px 8px; border-radius: 5px; font-size: 0.7rem; z-index: 10;">
+                {{ product.discount }}% OFF</div>
+              {% endif %}
+              <a href="/product_detail/{{ product.id }}">
+                {% if product.image %}
+                <img src="{{ product.image.url }}" class="img-fluid shadow-sm" alt="product item"
+                  style="height: 200px; object-fit: cover; width: 100%;">
+                {% else %}
+                <img src="{% static 'images/E-commerce_img.png' %}" class="img-fluid shadow-sm" alt="product item"
+                  style="height: 200px; object-fit: cover; width: 100%;">
+                {% endif %}
+              </a>
+              <h6 class="mt-4 mb-0 fw-bold"><a href="/product_detail/{{ product.id }}">{{ product.name }}</a></h6>
+              <div class="review-content d-flex">
+                <p class="my-2 me-2 fs-6 text-black-50">{{ product.brand }}</p>
+              </div>
+
+              <div class="d-flex flex-column">
+                {% if product.is_discounted %}
+                <span class="original-price text-decoration-line-through text-muted small">₹ {{ product.price }}</span>
+                <span class="price text-primary fw-bold mb-2 fs-5">₹ {{ product.discounted_price }}</span>
+                {% else %}
+                <span class="price text-primary fw-bold mb-2 fs-5">₹ {{ product.price }}</span>
+                {% endif %}
+              </div>
+
+              <div class="card-concern position-absolute start-0 end-0 d-flex gap-2">
+                <button type="button" class="btn btn-dark cart-btn" data-product-id="{{ product.id }}">
+                  <svg class="cart" width="18" height="18">
+                    <use xlink:href="#cart"></use>
+                  </svg>
+                </button>
+                <a href="#" class="btn btn-dark">
+                  <span>
+                    <svg class="wishlist" width="18" height="18">
+                      <use xlink:href="#heart"></use>
+                    </svg>
+                  </span>
+                </a>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  {% if shoe_products %}
+  <section id="best-selling-items" class="position-relative padding-large ">
+    <div class="container">
+      <div class="section-title d-md-flex justify-content-between align-items-center mb-4">
+        <h3 class="d-flex align-items-center">Footwear</h3>
+        <a href="{% url 'category' %}?category=Shoes" class="btn">View All</a>
+      </div>
+      <div
+        class="position-absolute top-50 end-0 pe-0 pe-xxl-5 me-0 me-xxl-5 swiper-next-shoe product-slider-button-next">
+        <svg class="chevron-forward-circle d-flex justify-content-center align-items-center p-2" width="80" height="80">
+          <use xlink:href="#alt-arrow-right-outline"></use>
+        </svg>
+      </div>
+      <div
+        class="position-absolute top-50 start-0 ps-0 ps-xxl-5 ms-0 ms-xxl-5 swiper-prev-shoe product-slider-button-prev">
+        <svg class="chevron-back-circle d-flex justify-content-center align-items-center p-2" width="80" height="80">
+          <use xlink:href="#alt-arrow-left-outline"></use>
+        </svg>
+      </div>
+      <div class="swiper swiper-shoe">
+        <div class="swiper-wrapper">
+          {% for product in shoe_products %}
+          <div class="swiper-slide">
+            <div class="card position-relative p-4 border rounded-3 product-card">
+              {% if product.is_discounted %}
+              <div class="discount-badge"
+                style="position: absolute; top: 10px; right: 10px; background: #ff4d4d; color: white; padding: 2px 8px; border-radius: 5px; font-size: 0.7rem; z-index: 10;">
+                {{ product.discount }}% OFF</div>
+              {% endif %}
+              <a href="/product_detail/{{ product.id }}">
+                {% if product.image %}
+                <img src="{{ product.image.url }}" class="img-fluid shadow-sm" alt="product item"
+                  style="height: 200px; object-fit: cover; width: 100%;">
+                {% else %}
+                <img src="{% static 'images/E-commerce_img.png' %}" class="img-fluid shadow-sm" alt="product item"
+                  style="height: 200px; object-fit: cover; width: 100%;">
+                {% endif %}
+              </a>
+              <h6 class="mt-4 mb-0 fw-bold"><a href="/product_detail/{{ product.id }}">{{ product.name }}</a></h6>
+              <div class="review-content d-flex">
+                <p class="my-2 me-2 fs-6 text-black-50">{{ product.brand }}</p>
+              </div>
+
+              <div class="d-flex flex-column">
+                {% if product.is_discounted %}
+                <span class="original-price text-decoration-line-through text-muted small">₹ {{ product.price }}</span>
+                <span class="price text-primary fw-bold mb-2 fs-5">₹ {{ product.discounted_price }}</span>
+                {% else %}
+                <span class="price text-primary fw-bold mb-2 fs-5">₹ {{ product.price }}</span>
+                {% endif %}
+              </div>
+
+              <div class="card-concern position-absolute start-0 end-0 d-flex gap-2">
+                <button type="button" class="btn btn-dark cart-btn" data-product-id="{{ product.id }}">
+                  <svg class="cart" width="18" height="18">
+                    <use xlink:href="#cart"></use>
+                  </svg>
+                </button>
+                <a href="#" class="btn btn-dark">
+                  <span>
+                    <svg class="wishlist" width="18" height="18">
+                      <use xlink:href="#heart"></use>
+                    </svg>
+                  </span>
+                </a>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </section>
+  {% endif %}
 
   <section id="limited-offer" class="padding-large"
     style="background-image: url({% static 'images/banner-image-bg-1.jpg' %}); background-size: cover; background-repeat: no-repeat; background-position: center; height: 800px;">
@@ -871,11 +823,12 @@
       <div class="row d-flex align-items-center">
         <div class="col-md-6 text-center">
           <div class="image-holder">
-            <img src="{% static 'images/banner-image3.png' %}" class="img-fluid" alt="banner">
+            <img src="{% static 'images/discount_img.png' %}" class="banner-img" alt="banner"
+              style="width: 100%; height: auto;">
           </div>
         </div>
         <div class="col-md-5 offset-md-1 mt-5 mt-md-0 text-center text-md-start">
-          <h2>30% Discount on all items. Hurry Up !!!</h2>
+          <h2>Upto 30% Discount on all items.<br> Hurry Up !!!</h2>
           <div id="countdown-clock" class="text-dark d-flex align-items-center my-3">
             <div class="time d-grid pe-3">
               <span class="days fs-1 fw-normal"></span>
@@ -897,390 +850,10 @@
               <small>Sec</small>
             </div>
           </div>
-          <a href="index.html" class="btn mt-3">Shop Collection</a>
+          <a href="index.html" class="btn mt-3">Shop Products</a>
         </div>
       </div>
     </div>
-    </div>
-  </section>
-
-  <section id="items-listing" class="padding-large">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-6 mb-4 mb-lg-0 col-lg-3">
-          <div class="featured border rounded-3 p-4">
-            <div class="section-title overflow-hidden mb-5 mt-2">
-              <h3 class="d-flex flex-column mb-0">Featured</h3>
-            </div>
-            <div class="items-lists">
-              <div class="item d-flex">
-                <img src="{% static 'images/product-item2.png' %}" class="img-fluid shadow-sm" alt="product item">
-                <div class="item-content ms-3">
-                  <h6 class="mb-0 fw-bold"><a href="index.html">Echoes of the Ancients</a></h6>
-                  <div class="review-content d-flex">
-                    <p class="my-2 me-2 fs-6 text-black-50">Lauren Asher</p>
-
-                    <div class="rating text-warning d-flex align-items-center">
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                    </div>
-                  </div>
-                  <span class="price text-primary fw-bold mb-2 fs-5">$870</span>
-                </div>
-              </div>
-              <hr class="gray-400">
-              <div class="item d-flex">
-                <img src="{% static 'images/product-item1.png' %}" class="img-fluid shadow-sm" alt="product item">
-                <div class="item-content ms-3">
-                  <h6 class="mb-0 fw-bold"><a href="index.html">The Midnight Garden</a></h6>
-                  <div class="review-content d-flex">
-                    <p class="my-2 me-2 fs-6 text-black-50">Lauren Asher</p>
-                    <div class="rating text-warning d-flex align-items-center">
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                    </div>
-                  </div>
-                  <span class="price text-primary fw-bold mb-2 fs-5">$870</span>
-                </div>
-              </div>
-              <hr>
-              <div class="item d-flex">
-                <img src="{% static 'images/product-item3.png' %}" class="img-fluid shadow-sm" alt="product item">
-                <div class="item-content ms-3">
-                  <h6 class="mb-0 fw-bold"><a href="index.html">Shadow of the Serpent</a></h6>
-                  <div class="review-content d-flex">
-                    <p class="my-2 me-2 fs-6 text-black-50">Lauren Asher</p>
-
-                    <div class="rating text-warning d-flex align-items-center">
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                    </div>
-                  </div>
-                  <span class="price text-primary fw-bold mb-2 fs-5">$870</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 mb-4 mb-lg-0 col-lg-3">
-          <div class="latest-items border rounded-3 p-4">
-            <div class="section-title overflow-hidden mb-5 mt-2">
-              <h3 class="d-flex flex-column mb-0">Latest items</h3>
-            </div>
-            <div class="items-lists">
-              <div class="item d-flex">
-                <img src="{% static 'images/product-item4.png' %}" class="img-fluid shadow-sm" alt="product item">
-                <div class="item-content ms-3">
-                  <h6 class="mb-0 fw-bold"><a href="index.html">Whispering Winds</a></h6>
-                  <div class="review-content d-flex">
-                    <p class="my-2 me-2 fs-6 text-black-50">Lauren Asher</p>
-                    <div class="rating text-warning d-flex align-items-center">
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                    </div>
-                  </div>
-                  <span class="price text-primary fw-bold mb-2 fs-5">$870</span>
-                </div>
-              </div>
-              <hr class="gray-400">
-              <div class="item d-flex">
-                <img src="{% static 'images/product-item5.png' %}" class="img-fluid shadow-sm" alt="product item">
-                <div class="item-content ms-3">
-                  <h6 class="mb-0 fw-bold"><a href="index.html">The Forgotten Realm</a></h6>
-                  <div class="review-content d-flex">
-                    <p class="my-2 me-2 fs-6 text-black-50">Lauren Asher</p>
-                    <div class="rating text-warning d-flex align-items-center">
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                    </div>
-                  </div>
-                  <span class="price text-primary fw-bold mb-2 fs-5">$870</span>
-                </div>
-              </div>
-              <hr>
-              <div class="item d-flex">
-                <img src="{% static 'images/product-item6.png' %}" class="img-fluid shadow-sm" alt="product item">
-                <div class="item-content ms-3">
-                  <h6 class="mb-0 fw-bold"><a href="index.html">Moonlit Secrets</a></h6>
-                  <div class="review-content d-flex">
-                    <p class="my-2 me-2 fs-6 text-black-50">Lauren Asher</p>
-                    <div class="rating text-warning d-flex align-items-center">
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                    </div>
-                  </div>
-                  <span class="price text-primary fw-bold mb-2 fs-5">$870</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 mb-4 mb-lg-0 col-lg-3">
-          <div class="best-reviewed border rounded-3 p-4">
-            <div class="section-title overflow-hidden mb-5 mt-2">
-              <h3 class="d-flex flex-column mb-0">Best reviewed</h3>
-            </div>
-            <div class="items-lists">
-              <div class="item d-flex">
-                <img src="{% static 'images/product-item7.png' %}" class="img-fluid shadow-sm" alt="product item">
-                <div class="item-content ms-3">
-                  <h6 class="mb-0 fw-bold"><a href="index.html">The Crystal Key</a></h6>
-                  <div class="review-content d-flex">
-                    <p class="my-2 me-2 fs-6 text-black-50">Lauren Asher</p>
-                    <div class="rating text-warning d-flex align-items-center">
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                    </div>
-                  </div>
-                  <span class="price text-primary fw-bold mb-2 fs-5">$870</span>
-                </div>
-              </div>
-              <hr class="gray-400">
-              <div class="item d-flex">
-                <img src="{% static 'images/product-item8.png' %}" class="img-fluid shadow-sm" alt="product item">
-                <div class="item-content ms-3">
-                  <h6 class="mb-0 fw-bold"><a href="index.html">Starlight Sonata</a></h6>
-                  <div class="review-content d-flex">
-                    <p class="my-2 me-2 fs-6 text-black-50">Lauren Asher</p>
-                    <div class="rating text-warning d-flex align-items-center">
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                    </div>
-                  </div>
-                  <span class="price text-primary fw-bold mb-2 fs-5">$870</span>
-                </div>
-              </div>
-              <hr>
-              <div class="item d-flex">
-                <img src="{% static 'images/product-item9.png' %}" class="img-fluid shadow-sm" alt="product item">
-                <div class="item-content ms-3">
-                  <h6 class="mb-0 fw-bold"><a href="index.html">Tales of the Enchanted Forest</a></h6>
-                  <div class="review-content d-flex">
-                    <p class="my-2 me-2 fs-6 text-black-50">Lauren Asher</p>
-                    <div class="rating text-warning d-flex align-items-center">
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                    </div>
-                  </div>
-                  <span class="price text-primary fw-bold mb-2 fs-5">$870</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 mb-4 mb-lg-0 col-lg-3">
-          <div class="on-sale border rounded-3 p-4">
-            <div class="section-title overflow-hidden mb-5 mt-2">
-              <h3 class="d-flex flex-column mb-0">On sale</h3>
-            </div>
-            <div class="items-lists">
-              <div class="item d-flex">
-                <img src="{% static 'images/product-item10.png' %}" class="img-fluid shadow-sm" alt="product item">
-                <div class="item-content ms-3">
-                  <h6 class="mb-0 fw-bold"><a href="index.html">The Phoenix Chronicles</a></h6>
-                  <div class="review-content d-flex">
-                    <p class="my-2 me-2 fs-6 text-black-50">Lauren Asher</p>
-                    <div class="rating text-warning d-flex align-items-center">
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                    </div>
-                  </div>
-                  <span class="price text-primary fw-bold mb-2 fs-5"><s class="text-black-50">$1666</s>
-                    $999</span>
-                </div>
-              </div>
-              <hr class="gray-400">
-              <div class="item d-flex">
-                <img src="{% static 'images/product-item11.png' %}" class="img-fluid shadow-sm" alt="product item">
-                <div class="item-content ms-3">
-                  <h6 class="mb-0 fw-bold"><a href="index.html">Dreams of Avalon</a></h6>
-                  <div class="review-content d-flex">
-                    <p class="my-2 me-2 fs-6 text-black-50">Lauren Asher</p>
-                    <div class="rating text-warning d-flex align-items-center">
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                    </div>
-                  </div>
-                  <span class="price text-primary fw-bold mb-2 fs-5"><s class="text-black-50">$500</s>
-                    $410</span>
-                </div>
-              </div>
-              <hr>
-              <div class="item d-flex">
-                <img src="{% static 'images/product-item12.png' %}" class="img-fluid shadow-sm" alt="product item">
-                <div class="item-content ms-3">
-                  <h6 class="mb-0 fw-bold"><a href="index.html">Legends of the Dragon Isles</a></h6>
-                  <div class="review-content d-flex">
-                    <p class="my-2 me-2 fs-6 text-black-50">Lauren Asher</p>
-                    <div class="rating text-warning d-flex align-items-center">
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                      <svg class="star star-fill">
-                        <use xlink:href="#star-fill"></use>
-                      </svg>
-                    </div>
-                  </div>
-                  <span class="price text-primary fw-bold mb-2 fs-5"><s class="text-black-50">$600</s>
-                    $500</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </section>
 
@@ -1794,6 +1367,56 @@
         e.stopPropagation(); // keep open when clicking inside
       });
     })();
+
+    $(document).ready(function () {
+      if ($('.swiper-elec').length) {
+        new Swiper(".swiper-elec", {
+          spaceBetween: 20,
+          navigation: {
+            nextEl: ".swiper-next-elec",
+            prevEl: ".swiper-prev-elec",
+          },
+          breakpoints: {
+            0: { slidesPerView: 1 },
+            660: { slidesPerView: 3 },
+            980: { slidesPerView: 4 },
+            1500: { slidesPerView: 5 }
+          },
+        });
+      }
+
+      if ($('.swiper-cloth').length) {
+        new Swiper(".swiper-cloth", {
+          spaceBetween: 20,
+          navigation: {
+            nextEl: ".swiper-next-cloth",
+            prevEl: ".swiper-prev-cloth",
+          },
+          breakpoints: {
+            0: { slidesPerView: 1 },
+            660: { slidesPerView: 3 },
+            980: { slidesPerView: 4 },
+            1500: { slidesPerView: 5 }
+          },
+        });
+      }
+
+      if ($('.swiper-shoe').length) {
+        new Swiper(".swiper-shoe", {
+          spaceBetween: 20,
+          navigation: {
+            nextEl: ".swiper-next-shoe",
+            prevEl: ".swiper-prev-shoe",
+          },
+          breakpoints: {
+            0: { slidesPerView: 1 },
+            660: { slidesPerView: 3 },
+            980: { slidesPerView: 4 },
+            1500: { slidesPerView: 5 }
+          },
+        });
+      }
+    });
   </script>
 </body>
 
