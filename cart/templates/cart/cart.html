@@ -1,0 +1,510 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wiggly – My Cart</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: #f8f9fa;
+        }
+
+        /* ── profile dropdown ── */
+        .profile-menu-wrap {
+            position: relative;
+        }
+
+        .profile-icon-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            color: inherit;
+        }
+
+        #profile-dropdown {
+            display: none;
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            min-width: 150px;
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, .13);
+            padding: 8px 0;
+            z-index: 9999;
+            flex-direction: column;
+        }
+
+        #profile-dropdown.open {
+            display: flex;
+            animation: pdFadeIn .18s ease;
+        }
+
+        @keyframes pdFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-6px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .pd-greeting {
+            display: block;
+            padding: 6px 14px;
+            font-size: .8rem;
+            color: #888;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .pd-item {
+            display: block;
+            padding: 8px 14px;
+            font-size: .9rem;
+            color: #222;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: background .14s, color .14s;
+        }
+
+        .pd-item:hover {
+            background: #f5f5f5;
+            color: var(--bs-primary, #0d6efd);
+        }
+
+        .pd-loading {
+            padding: 8px 14px;
+            font-size: .85rem;
+            color: #aaa;
+        }
+
+        /* ── cart card ── */
+        .cart-card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, .07);
+            overflow: hidden;
+            transition: box-shadow .2s;
+        }
+
+        .cart-card:hover {
+            box-shadow: 0 8px 30px rgba(0, 0, 0, .13);
+        }
+
+        .cart-item-img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 1px solid #eee;
+        }
+
+        /* ── qty pill ── */
+        .qty-pill {
+            display: inline-flex;
+            align-items: center;
+            border: 1.5px solid #dee2e6;
+            border-radius: 50px;
+            overflow: hidden;
+            background: #f8f9fa;
+        }
+
+        .qty-pill button {
+            background: none;
+            border: none;
+            width: 34px;
+            height: 34px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            color: #222;
+            transition: background .15s;
+        }
+
+        .qty-pill button:hover {
+            background: #e9ecef;
+        }
+
+        .qty-pill .qty-val {
+            min-width: 32px;
+            text-align: center;
+            font-weight: 700;
+            font-size: .95rem;
+        }
+
+        /* ── remove ×  ── */
+        .btn-remove-item {
+            position: absolute;
+            top: 10px;
+            right: 12px;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: #ff4d4d;
+            color: #fff;
+            border: none;
+            font-size: .95rem;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background .15s;
+        }
+
+        .btn-remove-item:hover {
+            background: #c0392b;
+        }
+
+        /* ── summary card ── */
+        .summary-card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, .07);
+            padding: 28px;
+            position: sticky;
+            top: 20px;
+        }
+
+        .empty-cart-wrap {
+            min-height: 50vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .empty-cart-wrap svg {
+            opacity: .35;
+        }
+
+        .discount-badge-sm {
+            background: #ff4d4d;
+            color: #fff;
+            font-size: .65rem;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SVG sprites -->
+    <svg xmlns="http://www.w3.org/2000/svg" style="display:none;">
+        <symbol id="user" viewBox="0 0 24 24">
+            <path fill="currentColor" fill-rule="evenodd"
+                d="M12 1.25a4.75 4.75 0 1 0 0 9.5a4.75 4.75 0 0 0 0-9.5M8.75 6a3.25 3.25 0 1 1 6.5 0a3.25 3.25 0 0 1-6.5 0M12 12.25c-2.313 0-4.445.526-6.024 1.414C4.42 14.54 3.25 15.866 3.25 17.5v.102c-.001 1.162-.002 2.62 1.277 3.662c.629.512 1.51.877 2.7 1.117c1.192.242 2.747.369 4.773.369s3.58-.127 4.774-.369c1.19-.24 2.07-.605 2.7-1.117c1.279-1.042 1.277-2.5 1.276-3.662V17.5c0-1.634-1.17-2.96-2.725-3.836c-1.58-.888-3.711-1.414-6.025-1.414M4.75 17.5c0-.851.622-1.775 1.961-2.528c1.316-.74 3.184-1.222 5.29-1.222c2.104 0 3.972.482 5.288 1.222c1.34.753 1.961 1.677 1.961 2.528c0 1.308-.04 2.044-.724 2.6c-.37.302-.99.597-2.05.811c-1.057.214-2.502.339-4.476.339c-1.974 0-3.42-.125-4.476-.339c-1.06-.214-1.68-.509-2.05-.81c-.684-.557-.724-1.293-.724-2.601"
+                clip-rule="evenodd" />
+        </symbol>
+        <symbol id="cart" viewBox="0 0 24 24">
+            <path fill="currentColor" fill-rule="evenodd"
+                d="M2.249 2.292a.75.75 0 1 0-.498 1.416l.262.091c.667.235 1.106.39 1.429.549c.303.149.437.27.525.398c.09.132.16.314.2.677c.04.38.041.875.041 1.615V9.76c0 1.453.014 2.5.151 3.3c.146.854.438 1.466.985 2.042c.594.627 1.346.9 2.243 1.026c.858.122 1.948.122 3.293.122h5.406c.742 0 1.366 0 1.87-.062c.537-.065 1.025-.209 1.452-.556c.426-.348.665-.797.837-1.309c.163-.482.289-1.093.439-1.82l.508-2.469l.002-.005l.01-.052c.165-.825.303-1.519.338-2.077c.036-.586-.031-1.164-.413-1.66c-.235-.306-.565-.479-.866-.584a4.617 4.617 0 0 0-1.002-.21c-.687-.076-1.522-.076-2.34-.076H5.667a5.932 5.932 0 0 0-.01-.108c-.054-.497-.17-.95-.453-1.362c-.284-.416-.662-.682-1.102-.899c-.412-.202-.936-.386-1.553-.603zm3.46 4.578h11.38c.856 0 1.61.001 2.205.067c.296.034.517.08.672.134a.56.56 0 0 1 .176.086c.062.082.128.23.102.651c-.027.444-.143 1.036-.321 1.926v.002l-.5 2.42c-.16.783-.27 1.303-.399 1.688c-.123.366-.239.523-.364.625c-.125.102-.303.184-.685.23c-.404.05-.935.051-1.734.051h-5.303c-1.417 0-2.4-.002-3.14-.107c-.716-.101-1.093-.285-1.366-.573c-.32-.338-.493-.668-.595-1.263c-.11-.65-.129-1.558-.129-3.047zM7.5 21.75a2.25 2.25 0 1 1 0-4.5a2.25 2.25 0 0 1 0 4.5m-.75-2.25a.75.75 0 1 0 1.5 0a.75.75 0 0 0-1.5 0m9.75 2.25a2.25 2.25 0 1 1 0-4.5a2.25 2.25 0 0 1 0 4.5m-.75-2.25a.75.75 0 1 0 1.5 0a.75.75 0 0 0-1.5 0"
+                clip-rule="evenodd" />
+        </symbol>
+        <symbol id="navbar-icon" viewBox="0 0 16 16">
+            <path
+                d="M14 10.5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 .5-.5zm0-3a.5.5 0 0 0-.5-.5h-7a.5.5 0 0 0 0 1h7a.5.5 0 0 0 .5-.5zm0-3a.5.5 0 0 0-.5-.5h-11a.5.5 0 0 0 0 1h11a.5.5 0 0 0 .5-.5z" />
+        </symbol>
+    </svg>
+
+    <!-- ──────────────── HEADER ──────────────── -->
+    <header id="header" class="site-header">
+        <div class="top-info border-bottom d-none d-md-block">
+            <div class="container-fluid">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <p class="fs-6 my-2 text-center">Need any help? Call us <a href="#">112233344455</a></p>
+                    </div>
+                    <div class="col-md-4 border-start border-end">
+                        <p class="fs-6 my-2 text-center">Summer sale discount off 60%! <a
+                                class="text-decoration-underline" href="{% url 'home' %}">Shop Now</a></p>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="fs-6 my-2 text-center">2-3 business days delivery &amp; free returns</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <nav id="header-nav" class="navbar navbar-expand-lg py-3">
+            <div class="container">
+                <a class="navbar-brand" href="{% url 'home' %}">
+                    <img src="{% static 'images/wiggly-logo.png' %}" class="logo" style="max-height:120px;width:auto;">
+                </a>
+                <button class="navbar-toggler d-flex d-lg-none order-3 p-2" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#bdNavbar">
+                    <svg class="navbar-icon">
+                        <use xlink:href="#navbar-icon"></use>
+                    </svg>
+                </button>
+                <div class="offcanvas offcanvas-end" tabindex="-1" id="bdNavbar">
+                    <div class="offcanvas-header px-4 pb-0">
+                        <a class="navbar-brand" href="{% url 'home' %}">
+                            <img src="{% static 'images/wiggly-logo.png' %}" class="logo"
+                                style="max-height:120px;width:auto;">
+                        </a>
+                        <button type="button" class="btn-close btn-close-black" data-bs-dismiss="offcanvas"
+                            data-bs-target="#bdNavbar"></button>
+                    </div>
+                    <div class="offcanvas-body">
+                        <ul
+                            class="navbar-nav text-uppercase justify-content-start justify-content-lg-center align-items-start align-items-lg-center flex-grow-1">
+                            <li class="nav-item"><a class="nav-link me-4" href="{% url 'home' %}">Home</a></li>
+                            <li class="nav-item"><a class="nav-link me-4" href="#">About</a></li>
+                            <li class="nav-item"><a class="nav-link me-4" href="{% url 'category' %}">Shop</a></li>
+                            <li class="nav-item"><a class="nav-link me-4" href="#">Contact</a></li>
+                        </ul>
+                        <div class="user-items d-flex">
+                            <ul class="d-flex justify-content-end list-unstyled mb-0">
+                                <li class="pe-3 profile-menu-wrap">
+                                    <button type="button" class="profile-icon-btn" id="profile-icon-btn">
+                                        <svg class="user">
+                                            <use xlink:href="#user"></use>
+                                        </svg>
+                                    </button>
+                                    <div id="profile-dropdown"><span class="pd-loading">Loading…</span></div>
+                                </li>
+                                <li class="cart-dropdown">
+                                    <a href="{% url 'cart' %}">
+                                        <svg class="cart">
+                                            <use xlink:href="#cart"></use>
+                                        </svg>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ──────────────── MAIN ──────────────── -->
+    <main class="py-5">
+        <div class="container">
+
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <h2 class="fw-bold mb-0">My Cart
+                    {% if cart_items %}
+                    <span class="badge bg-primary ms-2 fs-6">{{ cart_items|length }}</span>
+                    {% endif %}
+                </h2>
+                {% if cart_items %}
+                <a href="{% url 'clear_cart' %}?redirect_url={% url 'home' %}"
+                    class="btn btn-outline-danger btn-sm rounded-pill px-4"
+                    onclick="return confirm('Are you sure you want to clear the entire cart?')">
+                    🗑 Clear Cart
+                </a>
+                {% endif %}
+            </div>
+
+            {% if cart_items %}
+            <div class="row g-4">
+
+                <!-- ── Item list ── -->
+                <div class="col-lg-8">
+                    {% for item in cart_items %}
+                    <div class="cart-card position-relative p-3 mb-3">
+
+                        <!-- ✕ remove whole item -->
+                        <a href="{% url 'delete_to_cart' item.product_id %}?redirect_url={% url 'cart' %}"
+                            class="btn-remove-item" title="Remove item"
+                            onclick="return confirm('Remove {{ item.name }} from cart?')">×</a>
+
+                        <div class="d-flex align-items-center gap-4 flex-wrap">
+
+                            <!-- product image -->
+                            {% if item.image %}
+                            <img src="{{ item.image.url }}" alt="{{ item.name }}" class="cart-item-img">
+                            {% else %}
+                            <img src="{% static 'images/E-commerce_img.png' %}" alt="{{ item.name }}"
+                                class="cart-item-img">
+                            {% endif %}
+
+                            <!-- details -->
+                            <div class="flex-grow-1">
+                                <p class="text-primary fw-semibold small mb-0">{{ item.brand }}</p>
+                                <h5 class="fw-bold mb-1">{{ item.name }}</h5>
+
+                                <!-- price row -->
+                                <div class="mb-2">
+                                    {% if item.is_discounted %}
+                                    <span class="discount-badge-sm me-1">{{ item.discount }}% OFF</span>
+                                    <span class="text-muted text-decoration-line-through small me-1">₹{{ item.price
+                                        }}</span>
+                                    <span class="text-primary fw-bold">₹{{ item.discounted_price }}</span>
+                                    {% else %}
+                                    <span class="text-primary fw-bold">₹{{ item.price }}</span>
+                                    {% endif %}
+                                    <span class="text-muted small ms-2">each</span>
+                                </div>
+
+                                <!-- quantity + controls -->
+                                <div class="d-flex align-items-center gap-3 flex-wrap">
+                                    <div class="qty-pill">
+                                        <!-- decrease by 1 -->
+                                        <a href="{% url 'delete_cart_item_1' item.product_id %}?redirect_url={% url 'cart' %}"
+                                            class="qty-btn-dec" title="Decrease quantity">
+                                            <button type="button">−</button>
+                                        </a>
+                                        <span class="qty-val">{{ item.quantity }}</span>
+                                        <!-- increase by 1 -->
+                                        <a href="{% url 'add_to_cart' item.product_id %}?redirect_url={% url 'cart' %}"
+                                            class="qty-btn-inc" title="Increase quantity">
+                                            <button type="button">+</button>
+                                        </a>
+                                    </div>
+
+                                    <span class="text-muted small">
+                                        Item total: <strong class="text-dark">₹{{ item.item_total }}</strong>
+                                    </span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                    <a href="{% url 'category' %}" class="btn btn-outline-secondary rounded-pill mt-2">
+                        ← Continue Shopping
+                    </a>
+                </div>
+
+                <!-- ── Order summary ── -->
+                <div class="col-lg-4">
+                    <div class="summary-card">
+                        <h5 class="fw-bold mb-4">Order Summary</h5>
+
+                        {% for item in cart_items %}
+                        <div class="d-flex justify-content-between mb-2 small">
+                            <span class="text-muted text-truncate me-2" style="max-width:160px;">{{ item.name }} × {{
+                                item.quantity }}</span>
+                            <span class="fw-semibold">₹{{ item.item_total }}</span>
+                        </div>
+                        {% endfor %}
+
+                        <hr>
+
+                        <div class="d-flex justify-content-between mb-1">
+                            <span class="text-muted">Subtotal</span>
+                            <span class="fw-semibold">₹{{ cart_total }}</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span class="text-muted">Delivery</span>
+                            <span class="text-success fw-semibold">FREE</span>
+                        </div>
+
+                        <hr>
+
+                        <div class="d-flex justify-content-between mb-4">
+                            <span class="fw-bold fs-5">Total</span>
+                            <span class="fw-bold fs-5 text-primary">₹{{ cart_total }}</span>
+                        </div>
+
+                        <a href="#" class="btn btn-dark w-100 rounded-pill py-2 fw-bold">
+                            Proceed to Checkout
+                        </a>
+                        <a href="{% url 'category' %}" class="btn btn-outline-secondary w-100 rounded-pill py-2 mt-2">
+                            Continue Shopping
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+            {% else %}
+            <!-- ── Empty cart ── -->
+            <div class="empty-cart-wrap text-center">
+                <svg width="110" height="110" viewBox="0 0 24 24" fill="none">
+                    <path fill="#aaa" fill-rule="evenodd"
+                        d="M2.249 2.292a.75.75 0 1 0-.498 1.416l.262.091c.667.235 1.106.39 1.429.549c.303.149.437.27.525.398c.09.132.16.314.2.677c.04.38.041.875.041 1.615V9.76c0 1.453.014 2.5.151 3.3c.146.854.438 1.466.985 2.042c.594.627 1.346.9 2.243 1.026c.858.122 1.948.122 3.293.122h5.406c.742 0 1.366 0 1.87-.062c.537-.065 1.025-.209 1.452-.556c.426-.348.665-.797.837-1.309c.163-.482.289-1.093.439-1.82l.508-2.469l.002-.005l.01-.052c.165-.825.303-1.519.338-2.077c.036-.586-.031-1.164-.413-1.66c-.235-.306-.565-.479-.866-.584a4.617 4.617 0 0 0-1.002-.21c-.687-.076-1.522-.076-2.34-.076H5.667a5.932 5.932 0 0 0-.01-.108c-.054-.497-.17-.95-.453-1.362c-.284-.416-.662-.682-1.102-.899c-.412-.202-.936-.386-1.553-.603z"
+                        clip-rule="evenodd" />
+                </svg>
+                <h4 class="mt-4 fw-bold text-muted">Your cart is empty</h4>
+                <p class="text-muted mb-4">Looks like you haven't added anything yet.</p>
+                <a href="{% url 'category' %}" class="btn btn-dark rounded-pill px-5 py-2 fw-bold">Shop Now</a>
+            </div>
+            {% endif %}
+
+        </div>
+    </main>
+
+    <!-- ──────────────── FOOTER ──────────────── -->
+    <footer id="footer" class="padding-large pt-5 border-top mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-sm-6 pb-3">
+                    <img src="{% static 'images/wiggly-logo.png' %}" alt="logo" class="img-fluid mb-2"
+                        style="max-height:90px;">
+                    <p class="text-muted small">The premium destination for your shopping needs.</p>
+                </div>
+                <div class="col-lg-2 col-sm-6 pb-3">
+                    <h6 class="fw-bold pb-2">Quick Links</h6>
+                    <ul class="list-unstyled small">
+                        <li><a href="{% url 'home' %}" class="text-decoration-none text-muted">Home</a></li>
+                        <li><a href="{% url 'category' %}" class="text-decoration-none text-muted">Shop</a></li>
+                        <li><a href="{% url 'cart' %}" class="text-decoration-none text-muted">Cart</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="text-center mt-4">
+                <p class="text-muted small mb-0">© 2024 Wiggly. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{% static 'js/jquery-1.11.0.min.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Profile dropdown
+        (function () {
+            var btn = document.getElementById('profile-icon-btn');
+            var dropdown = document.getElementById('profile-dropdown');
+            var fetched = false;
+            if (!btn || !dropdown) return;
+            btn.addEventListener('click', function (e) {
+                e.preventDefault(); e.stopPropagation();
+                if (dropdown.classList.contains('open')) { dropdown.classList.remove('open'); return; }
+                if (fetched) { dropdown.classList.add('open'); return; }
+                dropdown.innerHTML = '<span class="pd-loading">Loading\u2026</span>';
+                dropdown.classList.add('open');
+                fetch('/accounts/', { credentials: 'same-origin' })
+                    .then(r => r.text())
+                    .then(html => { fetched = true; dropdown.innerHTML = html; })
+                    .catch(() => { dropdown.innerHTML = '<span class="pd-loading">Error loading</span>'; });
+            });
+            document.addEventListener('click', () => dropdown.classList.remove('open'));
+            dropdown.addEventListener('click', e => e.stopPropagation());
+        })();
+
+        // Prevent double-click spam on qty buttons
+        document.querySelectorAll('.qty-btn-inc, .qty-btn-dec, .btn-remove-item').forEach(function (el) {
+            el.addEventListener('click', function () {
+                this.style.pointerEvents = 'none';
+                this.style.opacity = '0.5';
+            });
+        });
+    </script>
+
+</body>
+
+</html>

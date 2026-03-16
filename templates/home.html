@@ -306,8 +306,6 @@
             <p class="fs-6 my-2 text-center">Need any help? Call us <a href="#">112233344455</a></p>
           </div>
           <div class="col-md-4 border-start border-end">
-            <p class="fs-6 my-2 text-center">Summer sale discount off 60% off! <a class="text-decoration-underline"
-                href="index.html">Shop Now</a></p>
           </div>
           <div class="col-md-4">
             <p class="fs-6 my-2 text-center">2-3 business days delivery & free returns</p>
@@ -345,10 +343,7 @@
                 <a class="nav-link me-4" href="index.html">About</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link me-4" href="index.html">Shop</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link me-4" href="index.html">Blogs</a>
+                <a class="nav-link me-4" href="{% url 'category' %}">Shop</a>
               </li>
               {% if is_superuser %}
               <li class="nav-item dropdown">
@@ -370,13 +365,6 @@
             </ul>
             <div class="user-items d-flex">
               <ul class="d-flex justify-content-end list-unstyled mb-0">
-                <li class="search-item pe-3">
-                  <a href="#" class="search-button">
-                    <svg class="search">
-                      <use xlink:href="#search"></use>
-                    </svg>
-                  </a>
-                </li>
                 <li class="pe-3 profile-menu-wrap"><a href="/accounts">
                     <button type="button" class="profile-icon-btn" id="profile-icon-btn" aria-label="Account">
                       <svg class="user">
@@ -612,7 +600,7 @@
       </div>
       <div class="swiper swiper-elec">
         <div class="swiper-wrapper">
-          {% for product in elec_products|slice:"10" %}
+          {% for product in elec_products|slice:"8" %}
           <div class="swiper-slide">
             <div class="card position-relative p-4 border rounded-3 product-card">
               {% if product.is_discounted %}
@@ -645,11 +633,23 @@
               </div>
 
               <div class="card-concern position-absolute start-0 end-0 d-flex gap-2">
-                <button type="button" class="btn btn-dark cart-btn" data-product-id="{{ product.id }}">
+                {% if product.cart_quantity > 0 %}
+                <div class="btn btn-dark d-flex align-items-center p-0 px-2 justify-content-between"
+                  style="width: 60px;">
+                  <a href="{% url 'delete_cart_item_1' product.id %}?redirect_url={{ request.get_full_path|urlencode }}"
+                    class="text-white text-decoration-none fw-bold fs-6" style="padding:0 4px;">−</a>
+                  <span class="text-white fw-bold fs-6" style="line-height:1;">{{ product.cart_quantity }}</span>
+                  <a href="{% url 'add_to_cart' product.id %}?redirect_url={{ request.get_full_path|urlencode }}"
+                    class="text-white text-decoration-none fw-bold fs-6" style="padding:0 4px;">+</a>
+                </div>
+                {% else %}
+                <a href="{% url 'add_to_cart' product.id %}?redirect_url={{ request.get_full_path|urlencode }}"
+                  class="btn btn-dark cart-btn d-flex align-items-center justify-content-center">
                   <svg class="cart" width="18" height="18">
                     <use xlink:href="#cart"></use>
                   </svg>
-                </button>
+                </a>
+                {% endif %}
                 <a href="#" class="btn btn-dark">
                   <span>
                     <svg class="wishlist" width="18" height="18">
@@ -688,7 +688,7 @@
       </div>
       <div class="swiper swiper-cloth">
         <div class="swiper-wrapper">
-          {% for product in cloth_products %}
+          {% for product in cloth_products|slice:"8" %}
           <div class="swiper-slide">
             <div class="card position-relative p-4 border rounded-3 product-card">
               {% if product.is_discounted %}
@@ -720,11 +720,23 @@
               </div>
 
               <div class="card-concern position-absolute start-0 end-0 d-flex gap-2">
-                <button type="button" class="btn btn-dark cart-btn" data-product-id="{{ product.id }}">
+                {% if product.cart_quantity > 0 %}
+                <div class="btn btn-dark d-flex align-items-center p-0 px-2 justify-content-between"
+                  style="width: 60px;">
+                  <a href="{% url 'delete_cart_item_1' product.id %}?redirect_url={{ request.get_full_path|urlencode }}"
+                    class="text-white text-decoration-none fw-bold fs-6" style="padding:0 4px;">−</a>
+                  <span class="text-white fw-bold fs-6" style="line-height:1;">{{ product.cart_quantity }}</span>
+                  <a href="{% url 'add_to_cart' product.id %}?redirect_url={{ request.get_full_path|urlencode }}"
+                    class="text-white text-decoration-none fw-bold fs-6" style="padding:0 4px;">+</a>
+                </div>
+                {% else %}
+                <a href="{% url 'add_to_cart' product.id %}?redirect_url={{ request.get_full_path|urlencode }}"
+                  class="btn btn-dark cart-btn d-flex align-items-center justify-content-center">
                   <svg class="cart" width="18" height="18">
                     <use xlink:href="#cart"></use>
                   </svg>
-                </button>
+                </a>
+                {% endif %}
                 <a href="#" class="btn btn-dark">
                   <span>
                     <svg class="wishlist" width="18" height="18">
@@ -763,7 +775,7 @@
       </div>
       <div class="swiper swiper-shoe">
         <div class="swiper-wrapper">
-          {% for product in shoe_products %}
+          {% for product in shoe_products|slice:"8" %}
           <div class="swiper-slide">
             <div class="card position-relative p-4 border rounded-3 product-card">
               {% if product.is_discounted %}
@@ -795,11 +807,23 @@
               </div>
 
               <div class="card-concern position-absolute start-0 end-0 d-flex gap-2">
-                <button type="button" class="btn btn-dark cart-btn" data-product-id="{{ product.id }}">
+                {% if product.cart_quantity > 0 %}
+                <div class="btn btn-dark d-flex align-items-center p-0 px-2 justify-content-between"
+                  style="width: 60px;">
+                  <a href="{% url 'delete_cart_item_1' product.id %}?redirect_url={{ request.get_full_path|urlencode }}"
+                    class="text-white text-decoration-none fw-bold fs-6" style="padding:0 4px;">−</a>
+                  <span class="text-white fw-bold fs-6" style="line-height:1;">{{ product.cart_quantity }}</span>
+                  <a href="{% url 'add_to_cart' product.id %}?redirect_url={{ request.get_full_path|urlencode }}"
+                    class="text-white text-decoration-none fw-bold fs-6" style="padding:0 4px;">+</a>
+                </div>
+                {% else %}
+                <a href="{% url 'add_to_cart' product.id %}?redirect_url={{ request.get_full_path|urlencode }}"
+                  class="btn btn-dark cart-btn d-flex align-items-center justify-content-center">
                   <svg class="cart" width="18" height="18">
                     <use xlink:href="#cart"></use>
                   </svg>
-                </button>
+                </a>
+                {% endif %}
                 <a href="#" class="btn btn-dark">
                   <span>
                     <svg class="wishlist" width="18" height="18">
@@ -850,43 +874,88 @@
               <small>Sec</small>
             </div>
           </div>
-          <a href="index.html" class="btn mt-3">Shop Products</a>
+          <a href="{% url 'category' %}" class="btn mt-3">Shop Products</a>
         </div>
       </div>
     </div>
     </div>
   </section>
-
+  <br>
   <section id="categories" class="padding-large pt-0">
     <div class="container">
       <div class="section-title overflow-hidden mb-4">
         <h3 class="d-flex align-items-center">Categories</h3>
       </div>
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
           <div class="card mb-4 border-0 rounded-3 position-relative">
-            <a href="index.html">
-              <img src="{% static 'images/category1.jpg' %}" class="img-fluid rounded-3" alt="cart item">
-              <h6 class=" position-absolute bottom-0 bg-primary m-4 py-2 px-3 rounded-3"><a href="index.html"
-                  class="text-white">Romance</a></h6>
+            <a href="{% url 'category' %}?category=Electronics">
+              <img src="{% static 'images/electronics_img.png' %}" class="img-fluid rounded-3" alt="cart item"
+                style="height: 200px; object-fit: cover; width: 100%;">
+              <h6 class=" position-absolute bottom-0 bg-primary m-4 py-2 px-3 rounded-3"><a
+                  href="{% url 'category' %}?category=Electronics" class="text-white">Electronics and Gadgets</a></h6>
             </a>
           </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
           <div class="card text-center mb-4 border-0 rounded-3">
-            <a href="index.html">
-              <img src="{% static 'images/category2.jpg' %}" class="img-fluid rounded-3" alt="cart item">
-              <h6 class=" position-absolute bottom-0 bg-primary m-4 py-2 px-3 rounded-3"><a href="index.html"
-                  class="text-white">Lifestyle</a></h6>
+            <a href="{% url 'category' %}?category=Clothing">
+              <img src="{% static 'images/clothing_img.png' %}" class="img-fluid rounded-3" alt="cart item"
+                style="height: 200px; object-fit: cover; width: 100%;">
+              <h6 class=" position-absolute bottom-0 bg-primary m-4 py-2 px-3 rounded-3"><a
+                  href="{% url 'category' %}?category=Clothing" class="text-white">Summer & Winter Clothing</a></h6>
             </a>
           </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
           <div class="card text-center mb-4 border-0 rounded-3">
-            <a href="index.html">
-              <img src="{% static 'images/category3.jpg' %}" class="img-fluid rounded-3" alt="cart item">
-              <h6 class=" position-absolute bottom-0 bg-primary m-4 py-2 px-3 rounded-3"><a href="index.html"
-                  class="text-white">Recipe</a></h6>
+            <a href="{% url 'category' %}?category=Shoes">
+              <img src="{% static 'images/shoes_img.jpg' %}" class="img-fluid rounded-3" alt="cart item"
+                style="height: 200px; object-fit: cover; width: 100%;">
+              <h6 class=" position-absolute bottom-0 bg-primary m-4 py-2 px-3 rounded-3"><a
+                  href="{% url 'category' %}?category=Shoes" class="text-white">Footwear</a></h6>
+            </a>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card text-center mb-4 border-0 rounded-3">
+            <a href="{% url 'category' %}?category=Grocery">
+              <img src="{% static 'images/grocery_img.png' %}" class="img-fluid rounded-3" alt="cart item"
+                style="height: 200px; object-fit: cover; width: 100%;">
+              <h6 class=" position-absolute bottom-0 bg-primary m-4 py-2 px-3 rounded-3"><a
+                  href="{% url 'category' %}?category=Grocery" class="text-white">Grocery & Staples</a></h6>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3">
+          <div class="card mb-4 border-0 rounded-3 position-relative">
+            <a href="{% url 'category' %}?category=Beauty">
+              <img src="{% static 'images/beauty_img.jpg' %}" class="img-fluid rounded-3" alt="cart item"
+                style="height: 200px; object-fit: cover; width: 100%;">
+              <h6 class=" position-absolute bottom-0 bg-primary m-4 py-2 px-3 rounded-3"><a
+                  href="{% url 'category' %}?category=Beauty" class="text-white">Beauty & Health</a></h6>
+            </a>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card text-center mb-4 border-0 rounded-3">
+            <a href="{% url 'category' %}?category=Home">
+              <img src="{% static 'images/home_img.jpg' %}" class="img-fluid rounded-3" alt="cart item"
+                style="height: 200px; object-fit: cover; width: 100%;">
+              <h6 class=" position-absolute bottom-0 bg-primary m-4 py-2 px-3 rounded-3"><a
+                  href="{% url 'category' %}?category=Home" class="text-white">Home & Garden</a></h6>
+            </a>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card text-center mb-4 border-0 rounded-3">
+            <a href="{% url 'category' %}?category=Other">
+              <img src="{% static 'images/other_img.png' %}" class="img-fluid rounded-3" alt="cart item"
+                style="height: 200px; object-fit: cover; width: 100%;">
+              <h6 class=" position-absolute bottom-0 bg-primary m-4 py-2 px-3 rounded-3"><a
+                  href="{% url 'category' %}?category=Other" class="text-white">Other</a></h6>
             </a>
           </div>
         </div>
@@ -1041,139 +1110,6 @@
       </div>
     </div>
   </section>
-
-  <section id="latest-posts" class="padding-large">
-    <div class="container">
-      <div class="section-title d-md-flex justify-content-between align-items-center mb-4">
-        <h3 class="d-flex align-items-center">Latest posts</h3>
-        <a href="index.html" class="btn">View All</a>
-      </div>
-      <div class="row">
-        <div class="col-md-3 posts mb-4">
-          <img src="{% static 'images/post-item1.jpg' %}" alt="post image" class="img-fluid rounded-3">
-          <a href="blog.html" class="fs-6 text-primary">Books</a>
-          <h4 class="card-title mb-2 text-capitalize text-dark"><a href="index.html">10 Must-Read Books of the Year: Our
-              Top Picks!</a></h4>
-          <p class="mb-2">Dive into the world of cutting-edge technology with our latest blog post, where we highlight
-            five essential gadge. <span><a class="text-decoration-underline text-black-50" href="index.html">Read
-                More</a></span>
-          </p>
-        </div>
-        <div class="col-md-3 posts mb-4">
-          <img src="{% static 'images/post-item2.jpg' %}" alt="post image" class="img-fluid rounded-3">
-          <a href="blog.html" class="fs-6 text-primary">Books</a>
-          <h4 class="card-title mb-2 text-capitalize text-dark"><a href="index.html">The Fascinating Realm of Science
-              Fiction</a></h4>
-          <p class="mb-2">Explore the intersection of technology and sustainability in our latest blog post. Learn about
-            the innovative <span><a class="text-decoration-underline text-black-50" href="index.html">Read
-                More</a></span> </p>
-        </div>
-        <div class="col-md-3 posts mb-4">
-          <img src="{% static 'images/post-item3.jpg' %}" alt="post image" class="img-fluid rounded-3">
-          <a href="blog.html" class="fs-6 text-primary">Books</a>
-          <h4 class="card-title mb-2 text-capitalize text-dark"><a href="index.html">Finding Love in the Pages of a
-              Book</a></h4>
-          <p class="mb-2">Stay ahead of the curve with our insightful look into the rapidly evolving landscape of
-            wearable technology. <span><a class="text-decoration-underline text-black-50" href="index.html">Read
-                More</a></span>
-          </p>
-        </div>
-        <div class="col-md-3 posts mb-4">
-          <img src="{% static 'images/post-item4.jpg' %}" alt="post image" class="img-fluid rounded-3">
-          <a href="blog.html" class="fs-6 text-primary">Books</a>
-          <h4 class="card-title mb-2 text-capitalize text-dark"><a href="index.html">Reading for Mental Health: How
-              Books Can Heal and Inspire</a></h4>
-          <p class="mb-2">In today's remote work environment, productivity is key. Discover the top apps and tools that
-            can help you stay <span><a class="text-decoration-underline text-black-50" href="index.html">Read
-                More</a></span>
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="instagram">
-    <div class="container">
-      <div class="text-center mb-4">
-        <h3>Instagram</h3>
-      </div>
-      <div class="row">
-        <div class="col-md-2">
-          <figure class="instagram-item position-relative rounded-3">
-            <a href="https://templatesjungle.com/" class="image-link position-relative">
-              <div class="icon-overlay position-absolute d-flex justify-content-center">
-                <svg class="instagram">
-                  <use xlink:href="#instagram"></use>
-                </svg>
-              </div>
-              <img src="{% static 'images/insta-item1.jpg' %}" alt="instagram" class="img-fluid rounded-3 insta-image">
-            </a>
-          </figure>
-        </div>
-        <div class="col-md-2">
-          <figure class="instagram-item position-relative rounded-3">
-            <a href="https://templatesjungle.com/" class="image-link position-relative">
-              <div class="icon-overlay position-absolute d-flex justify-content-center">
-                <svg class="instagram">
-                  <use xlink:href="#instagram"></use>
-                </svg>
-              </div>
-              <img src="{% static 'images/insta-item2.jpg' %}" alt="instagram" class="img-fluid rounded-3 insta-image">
-            </a>
-          </figure>
-        </div>
-        <div class="col-md-2">
-          <figure class="instagram-item position-relative rounded-3">
-            <a href="https://templatesjungle.com/" class="image-link position-relative">
-              <div class="icon-overlay position-absolute d-flex justify-content-center">
-                <svg class="instagram">
-                  <use xlink:href="#instagram"></use>
-                </svg>
-              </div>
-              <img src="{% static 'images/insta-item3.jpg' %}" alt="instagram" class="img-fluid rounded-3 insta-image">
-            </a>
-          </figure>
-        </div>
-        <div class="col-md-2">
-          <figure class="instagram-item position-relative rounded-3">
-            <a href="https://templatesjungle.com/" class="image-link position-relative">
-              <div class="icon-overlay position-absolute d-flex justify-content-center">
-                <svg class="instagram">
-                  <use xlink:href="#instagram"></use>
-                </svg>
-              </div>
-              <img src="{% static 'images/insta-item4.jpg' %}" alt="instagram" class="img-fluid rounded-3 insta-image">
-            </a>
-          </figure>
-        </div>
-        <div class="col-md-2">
-          <figure class="instagram-item position-relative rounded-3">
-            <a href="https://templatesjungle.com/" class="image-link position-relative">
-              <div class="icon-overlay position-absolute d-flex justify-content-center">
-                <svg class="instagram">
-                  <use xlink:href="#instagram"></use>
-                </svg>
-              </div>
-              <img src="{% static 'images/insta-item5.jpg' %}" alt="instagram" class="img-fluid rounded-3 insta-image">
-            </a>
-          </figure>
-        </div>
-        <div class="col-md-2">
-          <figure class="instagram-item position-relative rounded-3">
-            <a href="https://templatesjungle.com/" class="image-link position-relative">
-              <div class="icon-overlay position-absolute d-flex justify-content-center">
-                <svg class="instagram">
-                  <use xlink:href="#instagram"></use>
-                </svg>
-              </div>
-              <img src="{% static 'images/insta-item6.jpg' %}" alt="instagram" class="img-fluid rounded-3 insta-image">
-            </a>
-          </figure>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <footer id="footer" class="padding-large">
     <div class="container">
       <div class="row">
@@ -1183,8 +1119,8 @@
               <div class="footer-menu">
                 <img src="{% static 'images/wiggly-logo.png' %}" alt="logo" class="img-fluid mb-2"
                   style="max-height: 120px; width: auto;">
-                <p>Nisi, purus vitae, ultrices nunc. Sit ac sit suscipit hendrerit. Gravida massa volutpat aenean odio
-                  erat nullam fringilla.</p>
+                <p>812-816 TUVOC Technology,<br>Times Square-1,<br>Near Baghban
+                  Partyplot,<br>Thaltej,<br>Ahmedabad-380059,<br>Gujarat,<br>India.</p>
                 <div class="social-links">
                   <ul class="d-flex list-unstyled">
                     <li>
@@ -1231,19 +1167,13 @@
                 <h5 class="widget-title pb-2">Quick Links</h5>
                 <ul class="menu-list list-unstyled text-capitalize">
                   <li class="menu-item mb-1">
-                    <a href="#">Home</a>
+                    <a href="/">Home</a>
                   </li>
                   <li class="menu-item mb-1">
-                    <a href="#">About</a>
+                    <a href="/about">About</a>
                   </li>
                   <li class="menu-item mb-1">
-                    <a href="#">Shop</a>
-                  </li>
-                  <li class="menu-item mb-1">
-                    <a href="#">Blogs</a>
-                  </li>
-                  <li class="menu-item mb-1">
-                    <a href="#">Contact</a>
+                    <a href="/category">Shop</a>
                   </li>
                 </ul>
               </div>
@@ -1273,7 +1203,7 @@
               <div class="footer-menu contact-item">
                 <h5 class="widget-title text-capitalize pb-2">Contact Us</h5>
                 <p>Do you have any queries or suggestions? <a href="mailto:"
-                    class="text-decoration-underline">yourinfo@gmail.com</a></p>
+                    class="text-decoration-underline">ammarsoniwala@gmail.com</a></p>
                 <p>If you need support? Just give us a call. <a href="#" class="text-decoration-underline">+55 111 222
                     333 44</a></p>
               </div>
@@ -1283,35 +1213,6 @@
       </div>
     </div>
   </footer>
-  <hr>
-  <div id="footer-bottom" class="mb-2">
-    <div class="container">
-      <div class="d-flex flex-wrap justify-content-between">
-        <div class="ship-and-payment d-flex gap-md-5 flex-wrap">
-          <div class="shipping d-flex">
-            <p>We ship with:</p>
-            <div class="card-wrap ps-2">
-              <img src="{% static 'images/dhl.png' %}" alt="visa">
-              <img src="{% static 'images/shippingcard.png' %}" alt="mastercard">
-            </div>
-          </div>
-          <div class="payment-method d-flex">
-            <p>Payment options:</p>
-            <div class="card-wrap ps-2">
-              <img src="{% static 'images/visa.jpg' %}" alt="visa">
-              <img src="{% static 'images/mastercard.jpg' %}" alt="mastercard">
-              <img src="{% static 'images/paypal.jpg' %}" alt="paypal">
-            </div>
-          </div>
-        </div>
-        <div class="copyright">
-          <p>© Copyright 2024 Wiggly. HTML Template by <a href="https://templatesjungle.com/"
-              target="_blank">TemplatesJungle</a>
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <script src="{% static 'js/jquery-1.11.0.min.js' %}"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"

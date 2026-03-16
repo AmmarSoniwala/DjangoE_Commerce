@@ -308,12 +308,32 @@
                                     {% endif %}
                                 </div>
                         </a>
-                        <button type="button" class="btn btn-dark cart-btn w-100" data-product-id="{{ product.id }}">
+                        {% with product_id_str=product.id|stringformat:"s" %}
+                        {% for key, qty in cart_items.items %}
+                        {% if key == product_id_str %}
+                        <div class="d-flex justify-content-between align-items-center w-100 bg-light rounded-pill border p-1"
+                            style="height: 48px;">
+                            <a href="{% url 'delete_cart_item_1' product.id %}?redirect_url={{ request.get_full_path|urlencode }}"
+                                class="btn btn-dark text-white rounded-circle d-flex align-items-center justify-content-center fw-bold p-0 shadow-sm"
+                                style="width: 32px; height: 32px; text-decoration: none;">−</a>
+                            <span class="fw-bold fs-6">{{ qty }}</span>
+                            <a href="{% url 'add_to_cart' product.id %}?redirect_url={{ request.get_full_path|urlencode }}"
+                                class="btn btn-dark text-white rounded-circle d-flex align-items-center justify-content-center fw-bold p-0 shadow-sm"
+                                style="width: 32px; height: 32px; text-decoration: none;">+</a>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+
+                        {% if product_id_str not in cart_items %}
+                        <a href="{% url 'add_to_cart' product.id %}?redirect_url={{ request.get_full_path|urlencode }}"
+                            class="btn btn-dark cart-btn w-100 d-flex align-items-center justify-content-center gap-2"
+                            style="height: 48px; text-decoration: none;">
                             <svg class="cart" width="18" height="18">
                                 <use xlink:href="#cart"></use>
-                            </svg>
-                            Add to Cart
-                        </button>
+                            </svg> Add to Cart
+                        </a>
+                        {% endif %}
+                        {% endwith %}
                     </div>
                 </div>
             </div>

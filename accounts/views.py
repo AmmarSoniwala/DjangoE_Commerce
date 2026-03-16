@@ -127,35 +127,43 @@ def accounts_options(request):
     """
     access_token = request.COOKIES.get('access_token')
     refresh_token = request.COOKIES.get('refresh_token')
-
-    logged_in = False
-
-    if access_token:
-        try:
-            jwt.decode(access_token, key=os.getenv('ACCESS_TOKEN_SECRET'), algorithms=['HS256'])
-            logged_in = True
-            print("ACESS TOKEN IS VALID")
-        except jwt.InvalidTokenError:
-            try:
-                jwt.decode(refresh_token, key=os.getenv('REFRESH_TOKEN_SECRET'), algorithms=['HS256'])
-                logged_in = True
-                print("REFRESH TOKEN IS VALID")
-            except jwt.InvalidTokenError:
-                print("REFRESH TOKEN IS INVALID")
-                pass
-
-    if logged_in:
-        html = (
-            '<a href="/accounts/signup/" class="pd-item">Sign Up</a>'
-            '<a href="/accounts/logout/" class="pd-item">Logout</a>'
-        )
-    else:
-        html = (
+    logged_out_html = (
             '<a href="/accounts/signup/" class="pd-item">Sign Up</a>'
             '<a href="/accounts/login/" class="pd-item">Login</a>'
         )
+    logged_in_html = (
+            '<a href="/accounts/signup/" class="pd-item">Sign Up</a>'
+            '<a href="/accounts/logout/" class="pd-item">Logout</a>'
+            '<a href="/address/" class="pd-item">Address</a>'
+        )
 
-    return HttpResponse(html)
+    logged_in = False
+
+    try:
+        jwt.decode(access_token, key=os.getenv('ACCESS_TOKEN_SECRET'), algorithms=['HS256'])
+        logged_in = True
+        print("ACCESS TOKEN IS VALID")
+        return HttpResponse(logged_in_html)
+    except jwt.InvalidTokenError:
+        try:
+            print("ACCESS TOKEN IS INVALID")
+            payload = jwt.decode(refresh_token, key=os.getenv('REFRESH_TOKEN_SECRET'), algorithms=['HS256'])
+            logged_in = True
+            user = User.objects.get(email=payload['email'])
+            access_token = generate_access_token(user)
+            response = HttpResponse(logged_in_html)
+            response.set_cookie(
+                'access_token',
+                access_token,
+                max_age=120,
+                httponly=False,
+                samesite='Lax',
+            )
+            print("REFRESH TOKEN IS VALID")
+            return response
+        except jwt.InvalidTokenError:
+            print("REFRESH TOKEN IS INVALID")
+            return HttpResponse(logged_out_html)
 
 def LogoutView(request):
     """
